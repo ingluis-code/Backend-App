@@ -105,7 +105,25 @@ export class BooksService {
     return `This action updates a #${id} book`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: string) {
+    const book = await this.bookRespository.findOneBy({ id });
+
+    if(!book){
+      throw new NotFoundException(
+        {
+          status: 'error',
+          message: `Product with ${ id } not found`
+        }
+      );
+    } 
+
+    await this.bookRespository.remove(book);
+
+    return {
+      status: 'success',
+      message: `Product with ${ id } remove`,
+      data: book
+    }
+
   }
 }

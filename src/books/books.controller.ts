@@ -17,9 +17,9 @@ export class BooksController {
     return this.booksService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
+  @Get('search/:param')
+  findByIdOrName(@Param('param') param: string)  {
+    return this.booksService.findByIdOrName(param);
   }
 
   @Patch(':id')

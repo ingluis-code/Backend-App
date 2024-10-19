@@ -3,7 +3,8 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class BooksService {
@@ -73,8 +74,31 @@ export class BooksService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findByIdOrName(param: string) {
+
+    let book: Book;
+
+    if(isUUID(param)){
+      book = await this.bookRespository.findOneBy({ id: param });
+    }else{
+      book = await this.bookRespository.findOneBy({ title: Like(`%${ param.toUpperCase() }%`) })
+    }
+    
+    if(!book){
+      throw new NotFoundException(
+        {
+          status: 'error',
+          message: `Product with ${ param } not found`
+        }
+      );
+    } 
+      
+    return {
+      status: 'success',
+      message: `Product with ${ param } found`,
+      data: book
+    }
+
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {

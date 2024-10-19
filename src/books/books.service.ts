@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,17 +19,58 @@ export class BooksService {
 
       await this.bookRespository.save(book);
 
-      return book;
+      return {
+        status: 'success',
+        message: 'Book created successfully',
+        data: book
+      };
 
     } catch (error) {
+      
       if(error.code === '23505')
-        throw new BadRequestException(error.detail);
-      throw new InternalServerErrorException('Unexpected error, check server logs')
+        throw new BadRequestException({
+          status: 'error',
+          message: 'The book with this title already exists',
+          error: error.detail,
+        });
+        
+
+      throw new InternalServerErrorException({
+        status: 'error',
+        message: 'Unexpected error, check server logs',
+        error: error.message,
+      })
     }
   }
 
-  findAll() {
-    return `This action returns all books`;
+  async findAll() {
+    try {
+      const books = await this.bookRespository.find();
+
+      if (books.length === 0) {
+        return {
+          status: 'error',
+          message: 'No books available',
+        }
+      }
+
+      return {
+        status: 'success',
+        message: 'Books retrieved successfully',
+        data: books,
+      };
+      
+    } catch (error) {
+
+      throw new InternalServerErrorException(
+        {
+          status: 'error',
+          message: 'An error occurred while fetching the books',
+          error: error.message,
+        }
+      )
+      
+    }
   }
 
   findOne(id: number) {

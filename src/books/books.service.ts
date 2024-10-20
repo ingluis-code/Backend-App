@@ -74,7 +74,7 @@ export class BooksService {
     }
   }
 
-  async findByIdOrName(param: string) {
+  async findByIdOrTitle(param: string) {
 
     let book: Book;
 
@@ -101,8 +101,25 @@ export class BooksService {
 
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: string, updateBookDto: UpdateBookDto) {
+    const book = await this.bookRespository.preload({ id, ...updateBookDto });
+
+    if(!book){
+      throw new NotFoundException(
+        {
+          status: 'error',
+          message: `Product with ${ id } not found`
+        }
+      );
+    } 
+
+    const updateBook = await this.bookRespository.save(book)
+
+    return {
+      status: 'success',
+      message: 'Book updated successfully',
+      data: updateBook
+    };
   }
 
   async remove(id: string) {

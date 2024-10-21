@@ -15,7 +15,16 @@ import { BooksModule } from './books/books.module';
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         autoLoadEntities: true,
-        synchronize: true
+        synchronize: true,
+        ssl: process.env.POSTGRES_SSL === 'true',
+        extra: {
+          ssl:
+            process.env.POSTGRES_SSL === 'true'
+              ? {
+                  rejectUnauthorized: false,
+                }
+              : null,
+        },
       }
     ),
     BooksModule,

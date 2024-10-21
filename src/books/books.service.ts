@@ -21,7 +21,7 @@ export class BooksService {
       await this.bookRespository.save(book);
 
       return {
-        status: 'success',
+        status: 'success',  
         message: 'Book created successfully',
         data: book
       };
@@ -76,7 +76,7 @@ export class BooksService {
 
   async findByIdOrTitle(param: string) {
 
-    let book: Book;
+    let book: Book; 
 
     if(isUUID(param)){
       book = await this.bookRespository.findOneBy({ id: param });
@@ -115,7 +115,7 @@ export class BooksService {
 
     const updateBook = await this.bookRespository.save(book)
 
-    return {
+    return { 
       status: 'success',
       message: 'Book updated successfully',
       data: updateBook

@@ -21,7 +21,7 @@ export class BooksService {
       await this.bookRespository.save(book);
 
       return {
-        status: 'success',  
+        status: 'success', 
         message: 'Book created successfully',
         data: book
       };

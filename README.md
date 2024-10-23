@@ -2,72 +2,92 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Libros Favoritos Backend
 
-## Description
+## Requisitos
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Node.js (>= 18.x)
+- Nest CLI (>= 10.x)
 
-## Installation
+## Instalación
 
-```bash
-$ npm install
-```
+1. Clona el repositorio:
 
-## Running the app
+    ```sh
+    git clone https://github.com/ingluis-code/Backend-App.git
+    cd backend-app
+    ```
 
-```bash
-# development
-$ npm run start
+2. Instala las dependencias:
 
-# watch mode
-$ npm run start:dev
+    ```sh
+    npm install
+    ```
+3. Renombrar el archivo ```.env.template``` a ```.env``` y cambiar las variables de entorno
+4. Levantar la base de datos ```docker-compose up -d```
 
-# production mode
-$ npm run start:prod
-```
+5. Ejecuta la aplicación en modo desarrollo:
 
-## Test
+    ```sh
+    npm run start:dev
+    ```
 
-```bash
-# unit tests
-$ npm run test
+    La API estará disponible en `http://localhost:3000`.
 
-# e2e tests
-$ npm run test:e2e
+## Docker
 
-# test coverage
-$ npm run test:cov
-```
+### Construir y ejecutar con Docker
 
-## Support
+1. Construye la imagen de Docker:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+    ```sh
+    docker build -t backend-api .
+    ```
 
-## Stay in touch
+2. Ejecuta el contenedor de Docker:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+    ```sh
+    docker run -d -p 3000:3000 backend-api
+    ```
 
-## License
+3. Construir y ejecutar los contenedores usando ```docker-compose```
 
-Nest is [MIT licensed](LICENSE).
+    ```sh
+    docker-compose up --build
+    ```
+4. Finalmente podemos ejecutar el contenedor de la base de datos,
+   El contenedor de el backend y frontend usando el archivo docker-compose.yml y 
+   la siguiente estructura de carpetas.
+
+    fullstack-app/ 
+
+    ├── frontend-app/    # Proyecto Angular (Frontend) 
+    
+    ├── backend-app/ # Proyecto NestJS (Backend) 
+    
+    └── docker-compose.yml # Archivo de Docker Compose para orquestar ambos servicios
+
+    ```sh
+    docker-compose up --build
+    ```
+
+    La API estará disponible en `http://localhost:3000`.
+    
+    La Base de datos estará disponible en `localhost:5432`.
+
+
+## Endpoints
+
+- `GET /api/books` - Obtener todos los libros
+- `POST /api//books` - Añadir un nuevo libro
+- `PUT /api//books/:id` - Actualizar un libro existente
+- `DELETE /api//books/:id` - Eliminar un libro
+- `GET /api/books/search/:param` - Buscar un libro por id o por titulo
+
+## Contacto
+
+Si tienes alguna pregunta o sugerencia, por favor abre un issue o contacta a [ingordillo2@gmail.com].
+
+
+- Author - [Luis Alberto Gordillo Gutierrez](www.linkedin.com/in/ingordillo1997)

@@ -1,14 +1,45 @@
 version: '3'
-  
 services:
-  db: 
-    image: postgres:14.3
+  postgres:
+    image: postgres:13
     restart: always
-    ports: 
-      - "5432:5432"
-    environment: 
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    container_name: bookdb
+    ports:
+      - "5432:5432"
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_HOST: ${DB_HOST}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend-app  # Ruta del frontend
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    ports:
+      - "80:80"  # Puerto para servir el frontend Angular
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
